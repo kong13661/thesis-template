@@ -20,3 +20,8 @@
   }
   body
 }
+
+#let c(..keys) = {
+  show super: it => it.body
+  keys.pos().map(k => cite(k)).join()
+}

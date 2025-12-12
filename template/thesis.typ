@@ -9,13 +9,15 @@
   let info = info-check(info: info)
   let degree = info.at(info-keys.申请学位级别)
   [#metadata(degree) <学位>]
-
+  show: set-global-page.with()
   show: set-font.with(info)
   show: common-set.with(info)
+  show: 其他-space-set.with()
   show: figure-env-set.with()
   show: set-global-heading.with(info)
   show: set-footnote.with()
   show: set-ref.with()
+  show: set-equation.with()
 
   封面(info: info)
   if degree != "学士" {
@@ -44,6 +46,7 @@
   缩略词表等注释表(info: info)
 
   // 此时到了正文页，需要重置页码为 1
+  show: 正文-space-set.with()
   counter(page).update(1)
   show: set-正文-heading.with()
   show: set-正文-page.with()

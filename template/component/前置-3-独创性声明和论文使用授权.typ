@@ -5,7 +5,7 @@
   // for debug
   #set block(stroke: if info.at(info-keys.DEBUG) { red } else { none })
 
-  #set par(first-line-indent: 2em, justify: true, leading: 1.5em, linebreaks: "optimized", spacing: 2em)
+  #set par(first-line-indent: 2em, justify: true, leading: 1.2em, linebreaks: "optimized", spacing: 2em)
   #set text(size: font-size.四号)
 
   #let 作者签名 = [#fixed-width-underline(

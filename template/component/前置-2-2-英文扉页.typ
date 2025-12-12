@@ -46,22 +46,22 @@
     #grid(
       columns: 1fr,
       rows: (1fr, 1fr, 1fr, 1fr, 1fr),
-      fixed-text-with-underline(7em, 28em, align(right)[Discipline], align(center, text(weight: "bold", 学科名称))),
+      fixed-text-with-underline(5em, 25em, align(right)[Discipline], align(center, text(weight: "bold", 学科名称))),
       fixed-text-with-underline(
-        7em,
-        28em,
+        5em,
+        25em,
         align(right)[Student ID],
         align(center, text(weight: "bold", info.at(info-keys.作者学号))),
       ),
       fixed-text-with-underline(
-        7em,
-        28em,
+        5em,
+        25em,
         align(right)[Author],
         align(center, text(weight: "bold", info.at(info-keys.作者英文名))),
       ),
       fixed-text-with-underline(
-        7em,
-        28em,
+        5em,
+        25em,
         align(right)[Supervisor],
         align(
           center,
@@ -69,8 +69,8 @@
         ),
       ),
       fixed-text-with-underline(
-        7em,
-        28em,
+        5em,
+        25em,
         align(right)[School],
         align(center, text(weight: "bold", info.at(info-keys.作者学院英文))),
       ),

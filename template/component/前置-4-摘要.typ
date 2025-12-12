@@ -21,12 +21,6 @@
     )
   }
 
-  context {
-    if calc.odd(here().page()) {
-      set page(header: none, footer: none, numbering: none)
-      counter(page).update(n => n - 1)
-    }
-  }
 }
 
 #let 中文摘要(info: (:)) = [

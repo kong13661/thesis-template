@@ -1,5 +1,6 @@
 #import "info.typ": *
 #import "font.typ": *
+#import "@preview/hydra:0.6.2": hydra
 
 #let footer-罗马数字页码 = context {
   set align(center)
@@ -15,7 +16,7 @@
 #let header-help-func(str) = context {
   set align(center + bottom)
   set text(size: font-size.五号)
-  set par(spacing: 0.4em, leading: 0.3em)
+  set par(spacing: 0.2em, leading: 0.3em)
   // block(inset: 0pt, height: 90%, stroke: red)[
   block(inset: 0pt, height: 90%)[
     #text(str)
@@ -32,92 +33,45 @@
 }
 
 #let header-中文摘要 = header-with-text("摘 要")
+
 #let header-英文摘要 = header-with-text("ABSTRACT")
+
 #let header-目录 = header-with-text("目 录")
+
 #let header-正文 = context {
   let txt = "电子科技大学" + query(<学位>).first().value + "学位论文"
   let body-page = counter(page).get().at(0, default: 0)
   // 奇数页为内容
   if calc.odd(body-page) {
-    let is-heading-1-page = false
-    let h = query(heading.where(level: 1).after(here()))
-      .filter(h => { h.location().page() == here().page() })
-      .at(0, default: none)
-    if h != none {
-      is-heading-1-page = true
-    } else {
-      h = query(heading.where(level: 1).before(here())).at(-1, default: none)
-    }
-    if h != none {
-      let cnt = counter(heading).at(here()).at(0, default: 1)
-      if is-heading-1-page {
-        cnt = cnt + 1
-      }
-
-      let num = if h.numbering != none {
-        h.numbering
-      } else {
-        none
-      }
-
-      let title-body = h.body
-      if num == none {
-        txt = title-body
-      } else {
-        txt = numbering(num, cnt) + " " + title-body
-      }
-    }
+    txt = hydra(1, skip-starting: false, use-last: true)
   }
-
   header-help-func(txt)
 }
 
 #let header-致谢 = header-with-text("致 谢")
 
-#let thesis-margin = (top: 30mm, bottom: 30mm)
-#let thesis-header-ascent = 20%
+#let set-global-page(body) = {
+  set page(paper: "a4", header: none, footer: none, margin: (top: 3cm, right: 3cm, bottom: 3cm, left: 3cm), header-ascent: 1cm - font-size.小五 - 4.5pt, footer-descent: 1cm - font-size.小五)
+  body
+}
 
 #let set-中文摘要-page(body) = {
-  set page(
-    header: header-中文摘要,
-    header-ascent: thesis-header-ascent,
-    footer: footer-罗马数字页码,
-    paper: "a4",
-    margin: thesis-margin,
-  )
+  set page(header: header-中文摘要, footer: footer-罗马数字页码)
   body
 }
 
 #let set-英文摘要-page(body) = {
-  set page(
-    header: header-英文摘要,
-    header-ascent: thesis-header-ascent,
-    footer: footer-罗马数字页码,
-    paper: "a4",
-    margin: thesis-margin,
-  )
+  set page(header: header-英文摘要, footer: footer-罗马数字页码)
   body
 }
 
 #let set-目录-page(body) = {
-  set page(
-    header: header-目录,
-    header-ascent: thesis-header-ascent,
-    footer: footer-罗马数字页码,
-    paper: "a4",
-    margin: thesis-margin,
-  )
+  set page(header: header-目录, footer: footer-罗马数字页码)
   body
 }
 
 #let set-正文-page(body) = {
-  set page(
-    header: header-正文,
-    header-ascent: thesis-header-ascent,
-    footer: footer-阿拉伯数字页码,
-    paper: "a4",
-    margin: thesis-margin,
-  )
+  set page(header: header-正文, footer: footer-阿拉伯数字页码)
   body
 }
 
