@@ -39,6 +39,7 @@
   show: set-英文摘要-page.with()
   英文摘要(info: info)
 
+  show: commen-space-set.with()
   show: set-目录-heading.with()
   show: set-目录-page.with()
   目录(info: info)
@@ -46,7 +47,6 @@
   缩略词表等注释表(info: info)
 
   // 此时到了正文页，需要重置页码为 1
-  show: 正文-space-set.with()
   counter(page).update(1)
   show: set-正文-heading.with()
   show: set-正文-page.with()

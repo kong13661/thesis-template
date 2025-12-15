@@ -5,7 +5,7 @@
   #set align(center)
   
   #set par(leading: above-leading-space()) // 设置条目行距
-  #set outline.entry(fill: repeat(text(top-edge: 0em)[.], gap: 0.15em))
+  #set outline.entry(fill: repeat(text(top-edge: 0em, bottom-edge: -0.3em)[.], gap: 0.1em))
 
   #show outline.entry.where(level: 1): it => {
     let prefix = if it.prefix() != none {

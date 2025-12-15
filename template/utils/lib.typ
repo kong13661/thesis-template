@@ -1,7 +1,7 @@
 #import "info.typ": info-default-kv, info-check
 
 #import "font.typ": get-song-font, get-hei-font, get-mono-font
-#import "common.typ": common-set, 正文-space-set, 其他-space-set
+#import "common.typ": common-set, commen-space-set, 其他-space-set
 
 #import "footnote.typ": set-footnote
 

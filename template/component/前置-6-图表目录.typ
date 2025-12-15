@@ -3,25 +3,43 @@
 #import "../tools/figure-i.typ": *
 
 #let 图表目录(info: (:)) = [
+  #set outline.entry(fill: repeat(text(top-edge: 0em, bottom-edge: -0.3em)[.], gap: 0.1em))
 
-#set par(leading: above-leading-space())
 #show outline.entry: it => {
   // 定义空隙宽度，方便统一调整
-  let gap = 1.5em 
+  // let gap = 1.5em 
+
+  let min-box(min-width: 0pt, body) = context {
+    let size = measure(body)
+    let size_abs = measure(h(min-width))
+    let final-width = calc.max(size_abs.width, size.width)
+    box(width: final-width, body)
+  }
+  let head-num = counter(heading).at(it.element.location()).first()
+  let element-num = counter(it.element.kind + str(head-num)).at(it.element.location()).first()
+  if head-num != 1 and element-num != 0 {
+    v(12pt)
+  }
   link(it.element.location())[
     #grid(
-      columns: (3.5em, 1fr, gap),
+      // columns: (auto, 1fr, gap),
+      columns: (auto, 1fr),
       // stroke: 0.5pt,
       gutter: 0pt, // 关键：左右栏必须紧贴，物理间隙为0
-      it.prefix(),
-      [#it.body()
-       #box(width: 1fr, clip: false)[
-            #box(width: 100% + gap)[
-                  #set text(top-edge: 0em)
-                  #box(width: 1fr, it.fill)
+      min-box(min-width: 3.5em)[#it.prefix()],
+      [#set par(justify: true)
+       #it.body()
+        // #set text(top-edge: 0em, bottom-edge: 0.0em) // box会跟字体基线相同。文中设置了-0.2em，因此内部内容要设置为0
+      //  #box(width: 1fr, clip: false)[
+            // #box(width: 100% + gap)[
+            // #box(width: 1fr)[
+                  #box(width: 1fr)[
+                    #set text(top-edge: 0em, bottom-edge: -0.25em)
+                    #it.fill
+                  ]
                   #it.page()
-              ]
-          ]
+              // ]
+          // ]
       ]
     )
   ]

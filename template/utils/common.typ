@@ -11,12 +11,12 @@
   body
 }
 
-#let 正文-space-set(body) = {
+#let commen-space-set(body) = {
   set par(first-line-indent: (amount: 2em, all: true), justify: true, leading: above-leading-space(), spacing: above-leading-space())
   body
 }
 
 #let 其他-space-set(body) = {
-  set par(leading: 1em, spacing: 1em)
+  set par(leading: 1em, spacing: 1em, justify: true)
   body
 }

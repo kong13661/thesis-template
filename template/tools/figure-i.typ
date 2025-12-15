@@ -25,7 +25,7 @@
   // figure 计数器自增函数
   // 图1-1 后变成 图1-2
   let count-step(kind) = {
-    let chapter-num = counter(heading.where(level: 1)).display()
+    let chapter-num = counter(heading.where(level: 1)).get().first()
     counter(kind + str(chapter-num)).step()
   }
 
@@ -89,12 +89,12 @@
   numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
 }
 
-#let table-figure(caption, table) = {
-  figure(table, caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl)
+#let table-figure(caption, table, placement: none) = {
+  figure(table, caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl, placement: placement)
 }
 
-#let code-figure(caption, code) = {
-  figure(code, caption: caption, supplement: [代码], numbering: code-numering, kind: figure-kind-code)
+#let code-figure(caption, code, placement: none) = {
+  figure(code, caption: caption, supplement: [代码], numbering: code-numering, kind: figure-kind-code, placement: placement)
 }
 
 #let picture-figure(caption, picture, placement: none) = {
