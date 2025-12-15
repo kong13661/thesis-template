@@ -15,9 +15,11 @@
     let final-width = calc.max(size_abs.width, size.width)
     box(width: final-width, body)
   }
+  let num-total = counter(it.element.kind + "total").get().first()
+  counter(it.element.kind + "total").step()
   let head-num = counter(heading).at(it.element.location()).first()
   let element-num = counter(it.element.kind + str(head-num)).at(it.element.location()).first()
-  if head-num != 1 and element-num != 0 {
+  if num-total != 0 and element-num == 0 {
     v(12pt)
   }
   link(it.element.location())[
