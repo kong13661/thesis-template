@@ -31,7 +31,7 @@
     }
   ]
 
-  #v(16em)
+  #v(13em)
 
   #block(height: 140pt)[
     #set align(center)
