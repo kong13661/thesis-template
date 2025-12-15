@@ -11,11 +11,16 @@
 // [     类似这样     ]
 //  _________________
 #let fixed-width-underline(width: auto, height: auto, body) = box(
-  body,
   width: width,
-  height: height,
   stroke: (bottom: 0.5pt),
-  outset: (bottom: 0.3em),
+  outset: (bottom: 0.2em),
+  height: height,
+  {
+    // 这里设置行间距
+    // 默认 leading 大约是 0.65em
+    set par(leading: 0.5em) 
+    body
+  }
 )
 
 // 占 width 的宽度, 其中包含一些字符

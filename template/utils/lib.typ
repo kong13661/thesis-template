@@ -1,8 +1,7 @@
 #import "info.typ": info-default-kv, info-check
 
 #import "font.typ": get-song-font, get-hei-font, get-mono-font
-
-#import "common.typ": common-set
+#import "common.typ": common-set, commen-space-set, 其他-space-set
 
 #import "footnote.typ": set-footnote
 
@@ -23,6 +22,7 @@
 )
 
 #import "page.typ": (
+  set-global-page,
   set-中文摘要-page,
   set-英文摘要-page,
   set-目录-page,
@@ -33,3 +33,6 @@
   set-攻读学位期间获取成果-page,
 )
 
+#import "equation.typ": (
+  set-equation,
+)

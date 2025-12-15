@@ -23,7 +23,7 @@
       info.at(info-keys.作者专业学位类别),
     )
   } else if info.at(info-keys.学位类型) == "学术型" {
-    justified-text-with-underline(4em, 16em, "学位类型", info.at(info-keys.作者专业学位类别))
+    justified-text-with-underline(4em, 16em, "学科专业", info.at(info-keys.作者学科专业))
   }
   #justified-text-with-underline(4em, 16em, "学号", info.at(info-keys.作者学号))
   #justified-text-with-underline(4em, 16em, "作者姓名", info.at(info-keys.作者中文名))
@@ -102,10 +102,10 @@
       // 需要换行且每一行都有下划线
       #if after-split.len() > 1 {
         for str in after-split {
-          fixed-width-underline(width: 20em, str)
+          fixed-width-underline(width: 18em, str)
         }
       } else if after-split.len() == 1 {
-        fixed-width-underline(width: 20em, after-split.at(0))
+        fixed-width-underline(width: 18em, after-split.at(0))
       }
     ]
   ]

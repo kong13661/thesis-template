@@ -9,13 +9,15 @@
   let info = info-check(info: info)
   let degree = info.at(info-keys.申请学位级别)
   [#metadata(degree) <学位>]
-
+  show: set-global-page.with()
   show: set-font.with(info)
   show: common-set.with(info)
+  show: 其他-space-set.with()
   show: figure-env-set.with()
   show: set-global-heading.with(info)
   show: set-footnote.with()
   show: set-ref.with()
+  show: set-equation.with()
 
   封面(info: info)
   if degree != "学士" {
@@ -37,6 +39,7 @@
   show: set-英文摘要-page.with()
   英文摘要(info: info)
 
+  show: commen-space-set.with()
   show: set-目录-heading.with()
   show: set-目录-page.with()
   目录(info: info)
