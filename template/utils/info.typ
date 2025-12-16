@@ -76,6 +76,8 @@
   info-keys.英文摘要: none,
   info-keys.英文摘要关键字: none,
   info-keys.攻读学位期间取得成果: none,
+
+  info-keys.浮动表图标题页置底: true,
 )
 
 #let set-font-info(宋体字体: "", 黑体字体: "", 等宽字体: "") = {

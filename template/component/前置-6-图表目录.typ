@@ -22,6 +22,7 @@
   if num-total != 0 and element-num == 0 {
     v(12pt)
   }
+
   link(it.element.location())[
     #grid(
       // columns: (auto, 1fr, gap),

@@ -13,7 +13,20 @@
       link(ele.location(), numbering("1.1.1节", ..counter(heading).at(ele.location())))
     } else if ele.func() == figure {
       // 图1-1, 表1-1 之类的
-      it
+      let fig = it.element
+      if fig.numbering == none { return it }
+      let location = query(metadata)
+        .find(data => (
+          type(data.value) == dictionary
+            and data.value.at("figure-location", default: none) == it.element.location()
+        ))
+        .value
+        .body-location
+      let supplement = (if it.supplement == auto { it.element } else { it }).supplement
+      let chapter-num = str(counter(heading.where(level: 1)).get().first())
+      let type-num = counter(fig.kind + chapter-num).at(fig.location()).first()
+      let num = numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
+      link(location, [#supplement#num])
     } else {
       it
     }

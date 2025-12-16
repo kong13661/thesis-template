@@ -9,6 +9,7 @@
   let info = info-check(info: info)
   let degree = info.at(info-keys.申请学位级别)
   [#metadata(degree) <学位>]
+  [#metadata(info) <info>]
   show: set-global-page.with()
   show: set-font.with(info)
   show: common-set.with(info)

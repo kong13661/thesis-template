@@ -4,6 +4,25 @@
 #let figure-kind-pic = "figure-kind-pic"
 #let figure-kind-tbl = "figure-kind-tbl"
 
+
+#let tbl-numering(_) = {
+  let chapter-num = str(counter(heading.where(level: 1)).get().first())
+  let type-num = counter(figure-kind-tbl + chapter-num).display()
+  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
+}
+
+#let pic-numering(_) = {
+  let chapter-num = str(counter(heading.where(level: 1)).get().first())
+  let type-num = counter(figure-kind-pic + chapter-num).display()
+  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
+}
+
+#let code-numering(_) = {
+  let chapter-num = str(counter(heading.where(level: 1)).get().first())
+  let type-num = counter(figure-kind-code + chapter-num).display()
+  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
+}
+
 #let figure-env-set(body) = {
   set block(breakable: true)
 
@@ -54,50 +73,103 @@
   }
 
   show figure: it => {
-    if it.kind == figure-kind-code {
-      figure-body(it)
-      count-step(figure-kind-code)
-    } else if it.kind == figure-kind-pic {
-      figure-body(it)
-      count-step(figure-kind-pic)
-    } else if it.kind == figure-kind-tbl {
-      figure-body(it)
-      count-step(figure-kind-tbl)
-    } else {
-      it.body
-    }
-  }
+    // 修复float布局figure页面不正确的问题：https://github.com/typst/typst/issues/4359
 
+    let space = 0pt
+    if it.outlined == true {
+      return it
+    }
+
+    let new-fig = none
+    let content = {
+
+      let fields = it.fields()
+      let body = fields.remove("body")
+      let _label = none
+      if fields.keys().contains("label") {
+        _label = fields.remove("label")
+      }
+      let counter = fields.remove("counter")
+
+      if it.kind == figure-kind-code {
+        count-step(figure-kind-code)
+      } else if it.kind == figure-kind-pic {
+        count-step(figure-kind-pic)
+      } else if it.kind == figure-kind-tbl {
+        count-step(figure-kind-tbl)
+      }
+
+      let meta = context {
+        metadata((
+        figure-location: it.location(),
+        body-location: here(),
+        label: _label,
+        ))
+
+        let info = query(<info>).first().value
+        let bottom_figure = info.at(info-keys.浮动表图标题页置底)
+
+        let page = here().page()
+        let h1-on-page = query(heading.where(level: 1))
+        .any(h => h.location().page() == page)
+        let should-force-bottom = false
+        let next-state = should-force-bottom
+        if h1-on-page and bottom_figure {
+          next-state = true
+        }
+        let marker-lbl = label("marker-" + str(_label))
+        [#metadata(next-state) #marker-lbl]
+      }
+      // text(num) // Force counter evaluation.
+      figure(meta + body, ..fields, placement: none, outlined: true)
+    }
+
+    if it.placement == none { return content }
+
+    let fields = it.fields()
+    let _label = fields.at("label")
+    let should-force-bottom = false
+    if _label != none {
+      let key-lbl = _label
+      let marker-lbl = label("marker-" + str(_label))
+      let history = query(marker-lbl)
+      if history.len() > 0 {
+        should-force-bottom = history.last().value
+      }
+    }
+    let placement = if should-force-bottom { bottom } else { it.placement }
+
+    // clearance目前不支持上下控制。这个实现不能捕捉auto，两张图放在一起的情况也不能完美处理。
+    let clearance = below-leading-space(12pt)
+    if it.kind == figure-kind-pic {
+      if placement == bottom {
+        clearance = above-leading-space(space: 6pt, word-space: 单倍行距)
+      }
+    }
+    if it.kind == figure-kind-tbl {
+      if placement == bottom {
+        clearance = above-leading-space(space: 12pt, word-space: 单倍行距)
+      }
+      if placement == top {
+        clearance = below-leading-space(6pt)
+      }
+    }
+
+    place(placement, float: true, clearance: clearance, scope: it.scope, block(width: 100%, content))
+  }
   body
 }
 
-#let tbl-numering(_) = {
-  let chapter-num = counter(heading.where(level: 1)).display()
-  let type-num = counter(figure-kind-tbl + chapter-num).display()
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
-}
-
-#let pic-numering(_) = {
-  let chapter-num = counter(heading.where(level: 1)).display()
-  let type-num = counter(figure-kind-pic + chapter-num).display()
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
-}
-
-#let code-numering(_) = {
-  let chapter-num = counter(heading.where(level: 1)).display()
-  let type-num = counter(figure-kind-code + chapter-num).display()
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
-}
+// #let set-placement
 
 #let table-figure(caption, table, placement: none) = {
-  figure(table, caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl, placement: placement)
+  figure(table, caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl, placement: placement, outlined: false)
 }
 
 #let code-figure(caption, code, placement: none) = {
-  figure(code, caption: caption, supplement: [代码], numbering: code-numering, kind: figure-kind-code, placement: placement)
+  figure(code, caption: caption, supplement: [代码], numbering: code-numering, kind: figure-kind-code, placement: placement, outlined: false)
 }
 
 #let picture-figure(caption, picture, placement: none) = {
-  figure(picture, caption: caption, supplement: [图], numbering: pic-numering, kind: figure-kind-pic, placement: placement)
+  figure(picture, caption: caption, supplement: [图], kind: figure-kind-pic, numbering: pic-numering, placement: placement, outlined: false)
 }
-
