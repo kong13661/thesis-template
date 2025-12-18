@@ -12,6 +12,11 @@
   num-str
 }
 
+#let code-numering-step() = {
+  let chapter-num = counter(heading.where(level: 1)).display()
+  counter(equation-code + chapter-num).step()
+}
+
 #let set-equation(body) = {
   set math.equation(
     numbering: code-numering, 
@@ -26,6 +31,7 @@
     let eqNumbering = none
     if it.has("label"){
       let eqCounter = counter(math.equation).at(it.location())
+      code-numering-step()
       eqNumbering = numbering(it.numbering, ..eqCounter)
     }
     
