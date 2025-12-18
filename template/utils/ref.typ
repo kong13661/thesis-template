@@ -10,7 +10,13 @@
     } else if ele.func() == heading {
       // 如果引用的是标题
       // 显示 1.1.1.1 节这种格式
-      link(ele.location(), numbering("1.1.1.1节", ..counter(heading).at(ele.location())))
+      let nums = counter(heading).at(ele.location())
+      let n = nums.len()
+      if n == 1 {
+        link(ele.location(), numbering("第一章", ..nums))
+      } else {
+        link(ele.location(), numbering("第1.1.1.1节", ..nums))
+      }
     } else if ele.func() == figure {
       // 图1-1, 表1-1 之类的
       let fig = it.element
