@@ -8,6 +8,7 @@
   // set text(top-edge: "ascender", bottom-edge: "descender")
   set text(top-edge: 0.8em, bottom-edge: -0.2em)
   set strong(delta: info.at(info-keys.加粗粗度))
+  set list(indent: 2em, body-indent: 0.5em)
   body
 }
 
@@ -20,3 +21,5 @@
   set par(leading: 1em, spacing: 1em, justify: true)
   body
 }
+
+#let noindent = context h(-par.first-line-indent.amount)

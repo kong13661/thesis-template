@@ -3,3 +3,4 @@
 #import "template/tools/lib.typ": table-figure, code-figure, picture-figure
 #import "template/tools/term.typ": term, print-glossary
 #import "template/utils/ref.typ": c
+#import "template/utils/common.typ": noindent
