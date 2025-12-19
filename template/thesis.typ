@@ -19,6 +19,7 @@
   show: set-footnote.with()
   show: set-ref.with()
   show: set-equation.with()
+  show: set-theoretic.with()
 
   封面(info: info)
   if degree != "学士" {

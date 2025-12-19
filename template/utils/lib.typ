@@ -34,5 +34,5 @@
 )
 
 #import "equation.typ": (
-  set-equation,
+  set-equation, set-theoretic
 )

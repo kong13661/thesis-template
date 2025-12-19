@@ -1,6 +1,6 @@
 #import "../utils/word_spacing.typ": above-leading-space, below-leading-space, 单倍行距
 #import "../consts.typ": *
-
+#import "@preview/theoretic:0.2.0" as theoretic: theorem, proof
 
 #let equation-code = "equation-code"
 
@@ -53,5 +53,73 @@
         )
     )
   }
+  body
+}
+
+#let theorem-supplement = text(font: "Heiti SC")[定理]
+#let proof-supplement = text(font: "Heiti SC")[证明]
+
+#let numbering-theorem(step: false, ref: none) = {
+  let n = counter(heading.where(level: 1)).get().first()
+  let thm-counter = counter("_thm" + str(n))
+  if step {
+    counter("_thm" + str(n)).step()
+  }
+  let count
+  if ref == none {
+    count = counter("_thm" + str(n)).get().first() + 1
+  } else {
+    count = counter("_thm" + str(n)).at(ref).first() + 1
+  }
+  let num = numbering("1", n) + "." + str(count)
+  num
+}
+
+#let theorem = theorem.with(
+ fmt-prefix: (s, n, t) => {
+ let num = numbering-theorem(step: true)
+ text[#h(2em)#s#num]
+ if t!= none {
+ h(2pt)
+ }
+ h(1em)
+ },
+ supplement: theorem-supplement,
+)
+
+#let proof-fmt-prefix(
+  supplement,
+  number,
+  title,
+) = {
+  emph({
+    supplement
+    if number != none [ #number]
+    if title != none [ of #title]
+    [.]
+    h(1em)
+  })
+}
+
+#let proof = proof.with(
+  fmt-prefix: (s, n, t) => {
+    {
+      if t != none {
+        let num = numbering-theorem(step: false, ref: t.target)
+        t = [#h(2em)#theorem-supplement#num]
+      }
+      
+      if t != none [#t]
+      s
+      if n != none [ #n]
+      h(1em)
+  }
+  },
+  fmt-suffix: () => [#h(1fr)$qed$],
+  supplement: proof-supplement,
+)
+
+#let set-theoretic(body) = {
+  show ref: theoretic.show-ref
   body
 }
