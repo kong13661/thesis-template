@@ -124,7 +124,28 @@
   supplement: proof-supplement,
 )
 
+#let show-ref(
+  it,
+) = {
+  let el = it.element
+  if (
+    el != none
+      and el.func() == metadata
+      and type(el.value) == dictionary
+      and el.value.at("theorem-kind", default: none) != none
+  ) {
+    let val = el.value
+    let ele = query(it.target)
+    let num = numbering-theorem(kind: ele.first().value.supplement.child.text, 
+            step: false, ref: it.target)
+    [#ele.first().value.supplement#num]
+  } else {
+    // Other references as usual.
+    it
+  }
+}
+
 #let set-theoretic(body) = {
-  show ref: theoretic.show-ref
+  show ref: show-ref
   body
 }
