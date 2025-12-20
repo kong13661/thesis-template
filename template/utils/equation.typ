@@ -1,6 +1,6 @@
 #import "../utils/word_spacing.typ": above-leading-space, below-leading-space, 单倍行距
 #import "../consts.typ": *
-#import "@preview/theoretic:0.2.0" as theoretic: theorem, proof
+#import "@preview/theoretic:0.2.0" as theoretic: theorem, proof, fmt-body
 
 #let equation-code = "equation-code"
 
@@ -78,12 +78,16 @@
 #let theorem = theorem.with(
  fmt-prefix: (s, n, t) => {
  let num = numbering-theorem(step: true)
- text[#h(2em)#s#num]
+ text[#s#num]
  if t!= none {
  h(2pt)
  }
  h(1em)
  },
+ fmt-body: (body, solution) => {[
+ #fmt-body(body, solution)
+ #parbreak()
+ ]},
  supplement: theorem-supplement,
 )
 
