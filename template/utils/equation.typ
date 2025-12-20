@@ -57,20 +57,18 @@
 }
 
 #let theorem-supplement = text(font: "Heiti SC")[定理]
+#let lemma-supplement = text(font: "Heiti SC")[引理]
 #let proof-supplement = text(font: "Heiti SC")[证明]
 
-#let numbering-theorem(step: false, ref: none) = {
+#let numbering-theorem(kind: none, step: false, ref: none) = {
   let n = counter(heading.where(level: 1)).get().first()
   let thm-counter = counter("_thm" + str(n))
+  let name-counter = if kind != none { kind + str(n) } else { "_thm" + str(n)}
   if step {
-    counter("_thm" + str(n)).step()
+    counter(name-counter).step()
   }
-  let count
-  if ref == none {
-    count = counter("_thm" + str(n)).get().first() + 1
-  } else {
-    count = counter("_thm" + str(n)).at(ref).first() + 1
-  }
+  let loc = if ref != none { ref } else { here() }
+  let count = counter(name-counter).at(loc).first() + 1
   let num = numbering("1", n) + "." + str(count)
   num
 }
@@ -87,7 +85,7 @@
 
 #let theorem = theorem.with(
   fmt-prefix: (s, n, t) => {
-  let num = numbering-theorem(step: true)
+  let num = numbering-theorem(kind: s.child.text, step: true)
   text[#s#num]
   if t!= none {
   h(2pt)
@@ -96,14 +94,22 @@
   },
   fmt-body: new-fmt-body,
   supplement: theorem-supplement,
+  kind: "theorem"
+)
+
+#let lemma = theorem.with(
+  supplement: lemma-supplement,
+  kind: "lemma"
 )
 
 #let proof = proof.with(
   fmt-prefix: (s, n, t) => {
     {
       if t != none {
-        let num = numbering-theorem(step: false, ref: t.target)
-        t = [#theorem-supplement#num]
+        let ele = query(t.target)
+        let num = numbering-theorem(kind: ele.first().value.supplement.child.text, 
+            step: false, ref: t.target)
+        t = [#ele.first().value.supplement#num]
       }
       
       if t != none [#t]
