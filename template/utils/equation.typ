@@ -41,12 +41,16 @@
     block(
       width: 100%, 
       inset: 0pt, // 确保没有额外内边距
-      above: above-leading-space(space: 6pt, word-space: 单倍行距),
-      below: below-leading-space(6pt),
+      above: above-leading-space(space: 8pt, word-space: 单倍行距),
+      below: below-leading-space(4pt),
+      // stroke: 0.5pt,
       grid(
           columns: (1fr, auto, 1fr),
           [],
           align(horizon)[
+              #set text(top-edge: "cap-height", bottom-edge: "baseline")
+              // #set text(top-edge: "bounds", bottom-edge: "bounds")
+              // #set par(leading: 20pt)
               #formatting
             ],
           align(right + horizon)[#eqNumbering],
