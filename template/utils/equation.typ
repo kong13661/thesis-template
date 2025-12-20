@@ -103,7 +103,7 @@
     {
       if t != none {
         let num = numbering-theorem(step: false, ref: t.target)
-        t = [#h(2em)#theorem-supplement#num]
+        t = [#theorem-supplement#num]
       }
       
       if t != none [#t]
