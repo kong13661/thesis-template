@@ -94,7 +94,8 @@
   },
   fmt-body: new-fmt-body,
   supplement: theorem-supplement,
-  kind: "theorem"
+  kind: "theorem",
+  toctitle: false,
 )
 
 #let lemma = theorem.with(
@@ -109,7 +110,7 @@
         let ele = query(t.target)
         let num = numbering-theorem(kind: ele.first().value.supplement.child.text, 
             step: false, ref: t.target)
-        t = [#ele.first().value.supplement#num]
+        t = link(ele.first().location())[#ele.first().value.supplement#num]
       }
       
       if t != none [#t]
