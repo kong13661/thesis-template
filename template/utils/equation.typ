@@ -75,35 +75,28 @@
   num
 }
 
-#let theorem = theorem.with(
- fmt-prefix: (s, n, t) => {
- let num = numbering-theorem(step: true)
- text[#s#num]
- if t!= none {
- h(2pt)
- }
- h(1em)
- },
- fmt-body: (body, solution) => {[
- #fmt-body(body, solution)
+#let new-fmt-body(body, solution) = {[
+  #let body-content = body
+  #if body.has("children") and body.children.first() == [#parbreak()] {
+    // 3. 切片：跳过第 0 个，取从第 1 个开始的所有元素，然后 join 重新拼接成 content
+    body-content = body.children.slice(1).join()
+  }
+ #fmt-body(body-content, solution)
  #parbreak()
- ]},
- supplement: theorem-supplement,
-)
+ ]}
 
-#let proof-fmt-prefix(
-  supplement,
-  number,
-  title,
-) = {
-  emph({
-    supplement
-    if number != none [ #number]
-    if title != none [ of #title]
-    [.]
-    h(1em)
-  })
-}
+#let theorem = theorem.with(
+  fmt-prefix: (s, n, t) => {
+  let num = numbering-theorem(step: true)
+  text[#s#num]
+  if t!= none {
+  h(2pt)
+  }
+  h(1em)
+  },
+  fmt-body: new-fmt-body,
+  supplement: theorem-supplement,
+)
 
 #let proof = proof.with(
   fmt-prefix: (s, n, t) => {
@@ -120,6 +113,7 @@
   }
   },
   fmt-suffix: () => [#h(1fr)$qed$],
+  fmt-body: new-fmt-body,
   supplement: proof-supplement,
 )
 
