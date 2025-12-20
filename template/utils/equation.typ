@@ -92,7 +92,7 @@
   if t!= none {
   h(2pt)
   }
-  h(1em)
+  h(0.5em)
   },
   fmt-body: new-fmt-body,
   supplement: theorem-supplement,
@@ -109,7 +109,7 @@
       if t != none [#t]
       s
       if n != none [ #n]
-      h(1em)
+      h(0.5em)
   }
   },
   fmt-suffix: () => [#h(1fr)$qed$],
