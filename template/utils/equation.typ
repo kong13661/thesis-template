@@ -138,7 +138,7 @@
     let ele = query(it.target)
     let num = numbering-theorem(kind: ele.first().value.supplement.child.text, 
             step: false, ref: it.target)
-    [#ele.first().value.supplement#num]
+    link(ele.first().location())[#ele.first().value.supplement#num]
   } else {
     // Other references as usual.
     it
