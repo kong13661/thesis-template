@@ -4,22 +4,22 @@
 
 #let equation-code = "equation-code"
 
-#let code-numering(_) = {
+#let equation-numering(nums, element: none) = {
   let chapter-num = counter(heading.where(level: 1)).display()
-  // set text(top-edge: "cap-height", bottom-edge: "baseline")
-  let type-num = counter(equation-code + chapter-num).display()
+  let loc = if element != none { element.location() } else { here() }
+  let type-num = counter(equation-code + chapter-num).at(loc).first()
   let num-str = "(" + numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1) + ")"
   num-str
 }
 
-#let code-numering-step() = {
+#let equation-numering-step() = {
   let chapter-num = counter(heading.where(level: 1)).display()
   counter(equation-code + chapter-num).step()
 }
 
 #let set-equation(body) = {
   set math.equation(
-    numbering: code-numering, 
+    numbering: equation-numering, 
     supplement: [式],
     number-align: horizon,
   )
@@ -31,7 +31,7 @@
     let eqNumbering = none
     if it.has("label"){
       let eqCounter = counter(math.equation).at(it.location())
-      code-numering-step()
+      equation-numering-step()
       eqNumbering = numbering(it.numbering, ..eqCounter)
     }
     

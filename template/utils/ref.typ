@@ -1,3 +1,6 @@
+#import "equation.typ": equation-numering
+#import "../tools/figure-i.typ": figure-numering
+
 #let set-ref(body) = {
   show ref: it => {
     let ele = it.element
@@ -6,7 +9,8 @@
     } else if ele.func() == math.equation {
       // 如果引用的数学公式
       // 显示数学公式自带的方式
-      link(ele.location(), numbering(ele.numbering, ..counter(math.equation).at(ele.location())))
+      let num-str = equation-numering((), element: ele)
+      link(ele.location(), "公式" + num-str)
     } else if ele.func() == heading {
       // 如果引用的是标题
       // 显示 1.1.1.1 节这种格式
@@ -29,9 +33,7 @@
         .value
         .body-location
       let supplement = (if it.supplement == auto { it.element } else { it }).supplement
-      let chapter-num = str(counter(heading.where(level: 1)).get().first())
-      let type-num = counter(fig.kind + chapter-num).at(fig.location()).first()
-      let num = numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num) + 1)
+      let num = figure-numering((), kind: fig.kind, element: fig)
       link(location, [#supplement#num])
     } else {
       it

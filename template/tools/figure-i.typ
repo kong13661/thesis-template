@@ -4,24 +4,16 @@
 #let figure-kind-pic = "figure-kind-pic"
 #let figure-kind-tbl = "figure-kind-tbl"
 
-
-#let tbl-numering(_) = {
+#let figure-numering(_, kind: "figure", element: none) = {
   let chapter-num = str(counter(heading.where(level: 1)).get().first())
-  let type-num = counter(figure-kind-tbl + chapter-num).display()
+  let loc = if element != none { element.location() } else { here() }
+  let type-num = counter(kind + chapter-num).at(loc).first() + 1
   numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
 }
 
-#let pic-numering(_) = {
-  let chapter-num = str(counter(heading.where(level: 1)).get().first())
-  let type-num = counter(figure-kind-pic + chapter-num).display()
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
-}
-
-#let code-numering(_) = {
-  let chapter-num = str(counter(heading.where(level: 1)).get().first())
-  let type-num = counter(figure-kind-code + chapter-num).display()
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
-}
+#let pic-numering = figure-numering.with(kind: figure-kind-pic, element: none)
+#let tbl-numering = figure-numering.with(kind: figure-kind-tbl, element: none)
+#let code-numering = figure-numering.with(kind: figure-kind-code, element: none)
 
 #let figure-env-set(body) = {
   set block(breakable: true)
@@ -91,13 +83,6 @@
       }
       let counter = fields.remove("counter")
 
-      if it.kind == figure-kind-code {
-        count-step(figure-kind-code)
-      } else if it.kind == figure-kind-pic {
-        count-step(figure-kind-pic)
-      } else if it.kind == figure-kind-tbl {
-        count-step(figure-kind-tbl)
-      }
 
       let meta = context {
         metadata((
@@ -122,6 +107,7 @@
       }
       // text(num) // Force counter evaluation.
       figure(meta + body, ..fields, placement: none, outlined: true)
+      count-step(it.kind)
     }
 
     if it.placement == none { return content }
