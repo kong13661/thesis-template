@@ -1,6 +1,5 @@
 #import "info.typ": *
 #import "font.typ": *
-#import "@preview/hydra:0.6.2": hydra
 
 #let footer-罗马数字页码 = context {
   set align(center)
@@ -43,7 +42,33 @@
   let body-page = counter(page).get().at(0, default: 0)
   // 奇数页为内容
   if calc.odd(body-page) {
-    txt = hydra(1, skip-starting: false, use-last: true)
+    // txt = hydra(1, skip-starting: false, use-last: true)
+    let is-heading-1-page = false
+    let h = query(heading.where(level: 1).after(here())).filter(h => { h.location().page() == here().page() }).at(0, default: none)
+    if h != none {
+      is-heading-1-page = true
+    } else {
+      h = query(heading.where(level: 1).before(here())).at(-1, default: none)
+    }
+    if h != none {
+      let cnt = counter(heading).at(here()).at(0, default: 1)
+      if is-heading-1-page {
+        cnt = cnt + 1
+      }
+
+      let num = if h.numbering != none {
+        h.numbering
+      } else {
+        none
+      }
+
+      let title-body = h.body
+      if num == none {
+        txt = title-body
+      } else {
+        txt = numbering(num, cnt) + " " + title-body
+      }
+    }
   }
   header-help-func(txt)
 }
