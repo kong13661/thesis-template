@@ -129,7 +129,7 @@
           gutter: 0pt,
           inset: 0pt,
           hlines.at(0),
-          pad(y: (0.6cm-1em)/2, align(caption-align, it.caption)),
+          pad(y: (0.7cm-1em)/2, align(caption-align, it.caption)),
           hlines.at(1),
           align(start, it.body),
           hlines.at(2),
@@ -185,7 +185,11 @@
 // #let set-placement
 
 #let table-figure(caption, table, placement: none) = {
-  figure(table, caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl, placement: placement, outlined: false)
+  figure(
+    [
+      #set text(size: font-size.五号)
+      #table], 
+    caption: caption, supplement: [表], numbering: tbl-numering, kind: figure-kind-tbl, placement: placement, outlined: false)
 }
 
 #let code-figure(caption, code, placement: none) = {
@@ -217,11 +221,13 @@
     placement: placement,
     caption: strong(caption),
     numbering: algo-numering,
-    algorithm(
+    [
+      #set text(size: font-size.五号)
+      #algorithm(
       indent: indent,
       inset: (
-        bottom: (0.6cm-1em)/2, 
-        top: (0.6cm-1em)/2, 
+        bottom: above-leading-space()/2, 
+        top: above-leading-space()/2, 
         left: 0.2em, 
         right: 0.2em),
       vstroke: vstroke,
@@ -229,7 +235,7 @@
       line-numbers-format: line-numbers-format,
       horizontal-offset: horizontal-offset,
       ..bits,
-    ),
+    )],
   )
 }
 
