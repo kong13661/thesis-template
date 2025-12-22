@@ -1,6 +1,7 @@
 #import "info.typ": *
 #import "font.typ": *
 #import "word_spacing.typ": above-leading-space, below-leading-space
+#import "@preview/cjk-spacer:0.2.0": cjk-spacer
 
 #let common-set(info, body) = {
   set par(first-line-indent: (amount: 2em, all: true), justify: true)
@@ -9,6 +10,7 @@
   set text(top-edge: 0.8em, bottom-edge: -0.2em)
   set strong(delta: info.at(info-keys.加粗粗度))
   set list(indent: 2em, body-indent: 0.5em)
+  show: cjk-spacer
   body
 }
 
