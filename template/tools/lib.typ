@@ -9,5 +9,6 @@
   header-line, 
   footer-line, 
   middle-line,
-  algorithm-figure)
+  algorithm-figure,
+  algorithmic)
 #import "fixed-witdh-content.typ": *

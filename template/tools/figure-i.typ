@@ -4,7 +4,8 @@
 #let figure-kind-pic = "figure-kind-pic"
 #let figure-kind-tbl = "figure-kind-tbl"
 #let figure-kind-algo = "figure-kind-algorithm"
-#import "@preview/algorithmic:1.0.7": algorithm
+#import "@preview/algorithmic:1.0.7": algorithm, iflike
+#import "@preview/algorithmic:1.0.7"
 
 #let figure-numering(_, kind: "figure", element: none) = {
   let chapter-num = str(counter(heading.where(level: 1)).get().first())

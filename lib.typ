@@ -9,7 +9,8 @@
   header-line, 
   footer-line, 
   middle-line,
-  algorithm-figure)
+  algorithm-figure,
+  algorithmic)
 #import "template/tools/term.typ": term, print-glossary
 #import "template/utils/ref.typ": c
 #import "template/utils/common.typ": noindent
