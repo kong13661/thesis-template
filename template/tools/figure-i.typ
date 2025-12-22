@@ -159,3 +159,14 @@
 #let picture-figure(caption, picture, placement: none) = {
   figure(picture, caption: caption, supplement: [图], kind: figure-kind-pic, numbering: pic-numering, placement: placement, outlined: false)
 }
+
+#let table = table.with(
+  stroke: none,
+  align: horizon + center,
+  rows: 0.6cm,
+  gutter: 0pt,
+  inset: (bottom: 0pt, top: 0pt))
+
+#let header-line = table.hline(stroke: 1.5pt)
+#let footer-line = table.hline(stroke: 1.5pt)
+#let middle-line = table.hline(stroke: 0.75pt)
