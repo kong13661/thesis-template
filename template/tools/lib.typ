@@ -8,5 +8,6 @@
   table, 
   header-line, 
   footer-line, 
-  middle-line)
+  middle-line,
+  algorithm-figure)
 #import "fixed-witdh-content.typ": *

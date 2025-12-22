@@ -8,7 +8,8 @@
   table, 
   header-line, 
   footer-line, 
-  middle-line)
+  middle-line,
+  algorithm-figure)
 #import "template/tools/term.typ": term, print-glossary
 #import "template/utils/ref.typ": c
 #import "template/utils/common.typ": noindent
