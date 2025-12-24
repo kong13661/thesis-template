@@ -7,11 +7,6 @@
 #import "@preview/algorithmic:1.0.7": algorithm, iflike
 #import "@preview/algorithmic:1.0.7"
 
-#let figure-grid = grid.with(
-  gutter: 0pt,
-  inset: (bottom: 4pt)
-)
-
 #let figure-numering(_, kind: "figure", element: none, only-sub: false, step: false) = {
   let loc = if element != none { element.location() } else { here() }
   let chapter-num = str(counter(heading.where(level: 1)).at(loc).first())
@@ -89,17 +84,21 @@
             kind: new-kind,
           ))
         }
-        figure(
-          fig.body + meta,
-          caption: fig.caption,
-          kind: new-kind,
-          supplement: fig.supplement,
-          numbering: figure-numering.with(kind: new-kind, only-sub: true),
-          placement: none,
-          outlined: false,
-          gap: fig.gap / 2,
-        )
-        count-step(new-kind)
+        block(inset: (bottom: bottom))[
+          #figure(
+            fig.body + meta,
+            caption: fig.caption,
+            kind: new-kind,
+            supplement: fig.supplement,
+            numbering: figure-numering.with(kind: new-kind, only-sub: true),
+            placement: none,
+            outlined: false,
+            gap: fig.gap / 2,
+          )
+        ]
+        if fig.caption != none {
+          count-step(new-kind)
+        }
       }
     }
     // 渲染 grid 本身
@@ -130,7 +129,12 @@
     let size = measure(it.body)
     layout(bounds => {
       let full-caption = if it.numbering != none {
-              [#it.supplement#it.counter.display(it.numbering)#h(0.5em)#it.body]
+              // let body = str(it.body)
+              if it.body != [] {
+                [#it.supplement#it.counter.display(it.numbering)#h(0.5em)#it.body]
+              } else {
+                [#it.supplement#it.counter.display(it.numbering)]
+              }
             } else {
               it.body
             }

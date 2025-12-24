@@ -10,6 +10,5 @@
   footer-line, 
   middle-line,
   algorithm-figure,
-  algorithmic,
-  figure-grid)
+  algorithmic)
 #import "fixed-witdh-content.typ": *
