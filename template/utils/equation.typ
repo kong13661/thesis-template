@@ -28,9 +28,11 @@
 
   // 嵌套分数处理. 首层分数不缩小字体。attach里的base不缩小字体。
   show math.attach: it => {
-    if it.has("label") and it.label == <__stop__> {
+    if it.base.has("children") and it.base.children.any(child => child.func() == metadata
+      and child.value.at("__stop__", default: none) == "__stop__") {
       return it
     }
+    let meta = metadata((__stop__: "__stop__"))
     let fields = it.fields()
     let base = fields.remove("base")
     let new-fields = (:)
@@ -43,14 +45,16 @@
         })
       }
     }
-    [#math.attach(base, ..new-fields) <__stop__>]
+    math.attach(base + meta, ..new-fields)
   }
 
   show math.equation.where(block: true): it => {
     show math.frac: it => {
-        if it.has("label") and it.label == <__stop__> {
+        if it.num.has("children") and it.num.children.any(child => child.func() == metadata
+          and child.value.at("__stop__", default: none) == "__stop__") {
           return it
         }
+
         let nested-num = {
           frac-depth.update(d => d + 1)
           it.num
@@ -62,10 +66,8 @@
           it.denom
           frac-depth.update(d => d - 1)
         }
-        
-        let tagged-frac = [
-          #math.frac(nested-num, nested-denom) <__stop__>
-        ]
+        let meta = metadata((__stop__: "__stop__"))
+        let tagged-frac = math.frac(nested-num + meta, nested-denom)
 
         context {
           let depth = frac-depth.get()
@@ -190,7 +192,6 @@
       and type(el.value) == dictionary
       and el.value.at("theorem-kind", default: none) != none
   ) {
-    let val = el.value
     let ele = query(it.target)
     let num = numbering-theorem(kind: ele.first().value.supplement.child.text, 
             step: false, ref: it.target)
