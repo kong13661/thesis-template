@@ -57,17 +57,13 @@
 
 #let figure-env-set(body) = {
 
+  // subfigure
   show grid: it => {
-  // 在 Grid 内部拦截 Figure
     show figure: fig => {
-      // 防止重复添加前缀（如果有嵌套 grid）
       if str(fig.kind).starts-with("sub-") {
         fig
       } else {
-        // 核心魔法：保持原始类型，但加上 "sub-" 标记
-        // 例如：kind: "table" -> kind: "sub-table"
         let new-kind = "sub-" + str(fig.kind)
-        // 重新构造 figure，传递新的 kind
         let fields = fig.fields()
         let body = fields.remove("body")
         let counter = fields.remove("counter")
@@ -108,21 +104,13 @@
 
   show figure.where(kind: figure-kind-tbl): set figure.caption(position: top)
   show figure.caption: set text(size: font-size.五号)
-  // 利用 box 的自动伸缩来实现
-  // 只有一行的时候居中
-  // 多行左对齐
    show figure: set figure(gap: 6pt)
-  // 显示的前后边距
   let figure-body(it) = {
     set par(leading: above-leading-space())
     it
   }
-  // show figure: set block(above: 2em, below: 2em)
-  // 图的整体间距：段前 6pt (段后由 caption 控制)
   show figure.where(kind: figure-kind-pic): set block(above: above-leading-space(space: 6pt, word-space: 单倍行距), below: below-leading-space(12pt))
   show figure.where(kind: figure-kind-tbl): set block(above: above-leading-space(space: 12pt, word-space: 单倍行距), below: below-leading-space(6pt))
-  // figure 计数器自增函数
-  // 图1-1 后变成 图1-2
 
   show figure.caption: it => {
     let indent-width = measure(h(4em)).width
