@@ -91,7 +91,7 @@
       if fields.keys().contains("label") {
         _label = fields.remove("label")
       } else {
-        _label = pic-numering((), element: it)
+        _label = figure-numering((), element: it, kind: it.kind)
       }
       let counter = fields.remove("counter")
 
@@ -146,7 +146,7 @@
     let fields = it.fields()
     let _label = fields.at("label", default: none)
     if _label == none {
-      _label = pic-numering((), element: it)
+      _label = figure-numering((), element: it, kind: it.kind)
     }
     let should-force-bottom = false
     if _label != none {
