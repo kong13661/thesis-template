@@ -35,17 +35,16 @@
     let meta = metadata((__stop__: "__stop__"))
     let fields = it.fields()
     let base = fields.remove("base")
-    let new-fields = (:)
     for key in ("t", "b", "tl", "bl", "tr", "br") {
       if key in fields and fields.at(key) != none {
-        new-fields.insert(key, {
+        fields.insert(key, {
           frac-depth.update(d => d + 999)
           fields.at(key, default: none)
           frac-depth.update(d => d - 999)
         })
       }
     }
-    math.attach(base + meta, ..new-fields)
+    math.attach(base + meta, ..fields)
   }
 
   show math.equation.where(block: true): it => {
