@@ -51,30 +51,30 @@
         if it.has("label") and it.label == <__stop__> {
           return it
         }
-        context {
-            let nested-num = {
-              frac-depth.update(d => d + 1)
-              it.num
-              frac-depth.update(d => d - 1) 
-            }
-            
-            let nested-denom = {
-              frac-depth.update(d => d + 1)
-              it.denom
-              frac-depth.update(d => d - 1)
-            }
-            
-            let tagged-frac = [
-              #math.frac(nested-num, nested-denom) <__stop__>
-            ]
+        let nested-num = {
+          frac-depth.update(d => d + 1)
+          it.num
+          frac-depth.update(d => d - 1) 
+        }
+        
+        let nested-denom = {
+          frac-depth.update(d => d + 1)
+          it.denom
+          frac-depth.update(d => d - 1)
+        }
+        
+        let tagged-frac = [
+          #math.frac(nested-num, nested-denom) <__stop__>
+        ]
 
-            let depth = frac-depth.get()
-            if depth < 1 {
-              math.display(tagged-frac)
-            } else {
-              tagged-frac
-            }
+        context {
+          let depth = frac-depth.get()
+          if depth < 1 {
+            math.display(tagged-frac)
+          } else {
+            tagged-frac
           }
+        }
     }
 
     let formatting = math.equation(numbering: none, it.body)
