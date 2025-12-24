@@ -17,6 +17,8 @@
   counter(equation-code + chapter-num).step()
 }
 
+#let frac-depth = state("frac-depth", 0)
+
 #let set-equation(body) = {
   set math.equation(
     numbering: equation-numering, 
@@ -24,7 +26,56 @@
     number-align: horizon,
   )
 
+  show math.attach: it => {
+    if it.has("label") and it.label == <__stop__> {
+      return it
+    }
+    let fields = it.fields()
+    let base = fields.remove("base")
+    let new-fields = (:)
+    for key in ("t", "b", "tl", "bl", "tr", "br") {
+      if key in fields and fields.at(key) != none {
+        new-fields.insert(key, {
+          frac-depth.update(d => d + 999)
+          fields.at(key, default: none)
+          frac-depth.update(d => d - 999)
+        })
+      }
+    }
+    [#math.attach(base, ..new-fields) <__stop__>]
+  }
+
   show math.equation.where(block: true): it => {
+    show math.frac: it => {
+        if it.has("label") and it.label == <__stop__> {
+          return it
+        }
+        context {
+            let nested-num = {
+              frac-depth.update(d => d + 1)
+              it.num
+              frac-depth.update(d => d - 1) 
+            }
+            
+            let nested-denom = {
+              frac-depth.update(d => d + 1)
+              it.denom
+              frac-depth.update(d => d - 1)
+            }
+            
+            let tagged-frac = [
+              #math.frac(nested-num, nested-denom) <__stop__>
+            ]
+
+            let depth = frac-depth.get()
+            if depth < 1 {
+              math.display(tagged-frac)
+            } else {
+              tagged-frac
+            }
+          }
+    }
+
     let formatting = math.equation(numbering: none, it.body)
     set text(size: font-size.小四)
 
