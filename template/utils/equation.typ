@@ -26,6 +26,7 @@
     number-align: horizon,
   )
 
+  // 嵌套分数处理. 首层分数不缩小字体。attach里的base不缩小字体。
   show math.attach: it => {
     if it.has("label") and it.label == <__stop__> {
       return it
