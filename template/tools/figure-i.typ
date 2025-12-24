@@ -7,11 +7,52 @@
 #import "@preview/algorithmic:1.0.7": algorithm, iflike
 #import "@preview/algorithmic:1.0.7"
 
-#let figure-numering(_, kind: "figure", element: none) = {
-  let chapter-num = str(counter(heading.where(level: 1)).get().first())
+#let figure-grid = grid.with(
+  gutter: 0pt,
+  inset: (bottom: 4pt)
+)
+
+#let figure-numering(_, kind: "figure", element: none, only-sub: false, step: false) = {
   let loc = if element != none { element.location() } else { here() }
-  let type-num = counter(kind + chapter-num).at(loc).first() + 1
-  numbering("1", counter(heading.where(level: 1)).get().first()) + "-" + str(int(type-num))
+  let chapter-num = str(counter(heading.where(level: 1)).at(loc).first())
+  if str(kind).starts-with("sub-") {
+    let num = figure-numering((), kind: str(kind).replace("sub-", ""), element: element)
+    let counter-name = "sub-" + kind + "-" + str(num)
+    if step {
+      counter(counter-name).step()
+    } else {
+      let sub-num = counter(counter-name).at(loc).first() + 1
+      if not only-sub {
+        num + " " + numbering("(a)", sub-num)
+      } else {
+        numbering("(a)", sub-num)
+      }
+    }
+  } else {
+    if step {
+      counter(kind + chapter-num).step()
+    } else {
+      let type-num = counter(kind + chapter-num).at(loc).first() + 1
+      numbering("1", counter(heading.where(level: 1)).at(loc).first()) + "-" + str(int(type-num))
+    }
+  }
+}
+
+#let count-step(kind) = {
+  figure-numering((), kind: kind, step: true)
+}
+
+#let get-counter-name(kind: "figure", element: none) = {
+  let num = figure-numering((), kind: kind, element: element)
+  let loc = if element != none { element.location() } else { here() }
+  let counter-name = "sub-" + kind + "-" + str(num)
+  let sub-num = counter(counter-name).at(loc).first() + 1
+  (sub-num, num, counter-name)
+}
+
+#let subfigure-numering(_, kind: "figure", element: none) = {
+  let num = get-counter-name(kind: kind, element: element).first()
+  numbering("(a)", num)
 }
 
 #let pic-numering = figure-numering.with(kind: figure-kind-pic, element: none)
@@ -20,6 +61,50 @@
 #let algo-numering = figure-numering.with(kind: figure-kind-algo, element: none)
 
 #let figure-env-set(body) = {
+
+  show grid: it => {
+  // 在 Grid 内部拦截 Figure
+    show figure: fig => {
+      // 防止重复添加前缀（如果有嵌套 grid）
+      if str(fig.kind).starts-with("sub-") {
+        fig
+      } else {
+        // 核心魔法：保持原始类型，但加上 "sub-" 标记
+        // 例如：kind: "table" -> kind: "sub-table"
+        let new-kind = "sub-" + str(fig.kind)
+        // 重新构造 figure，传递新的 kind
+        let fields = fig.fields()
+        let body = fields.remove("body")
+        let counter = fields.remove("counter")
+        let kind = fields.remove("kind")
+        let label = fields.remove("label", default: none)
+        let bottom = 0pt
+        if fields.at("caption", default: none) != none {
+          bottom = 6pt
+        }
+        let meta = context {
+          metadata((
+            figure-location: fig.location(),
+            body-location: here(),
+            kind: new-kind,
+          ))
+        }
+        figure(
+          fig.body + meta,
+          caption: fig.caption,
+          kind: new-kind,
+          supplement: fig.supplement,
+          numbering: figure-numering.with(kind: new-kind, only-sub: true),
+          placement: none,
+          outlined: false,
+          gap: fig.gap / 2,
+        )
+        count-step(new-kind)
+      }
+    }
+    // 渲染 grid 本身
+    it
+  }
   set block(breakable: true)
 
   show figure.where(kind: figure-kind-tbl): set figure.caption(position: top)
@@ -39,10 +124,6 @@
   show figure.where(kind: figure-kind-tbl): set block(above: above-leading-space(space: 12pt, word-space: 单倍行距), below: below-leading-space(6pt))
   // figure 计数器自增函数
   // 图1-1 后变成 图1-2
-  let count-step(kind) = {
-    let chapter-num = counter(heading.where(level: 1)).get().first()
-    counter(kind + str(chapter-num)).step()
-  }
 
   show figure.caption: it => {
     let indent-width = measure(h(4em)).width
@@ -83,6 +164,10 @@
       return it
     }
 
+    if str(it.kind).starts-with("sub-") {
+      return it
+    }
+
     let new-fig = none
     let content = {
       let fields = it.fields()
@@ -97,9 +182,10 @@
 
       let meta = context {
         metadata((
-        figure-location: it.location(),
-        body-location: here(),
-        label: _label,
+          figure-location: it.location(),
+          body-location: here(),
+          label: _label,
+          kind: it.kind,
         ))
 
         let info = query(<info>).first().value

@@ -25,15 +25,16 @@
       // 图1-1, 表1-1 之类的
       let fig = it.element
       if fig.numbering == none { return it }
-      let location = query(metadata)
+      let meta = query(metadata)
         .find(data => (
           type(data.value) == dictionary
             and data.value.at("figure-location", default: none) == it.element.location()
         ))
         .value
-        .body-location
+      let location = meta.body-location
+      let kind = meta.kind
       let supplement = (if it.supplement == auto { it.element } else { it }).supplement
-      let num = figure-numering((), kind: fig.kind, element: fig)
+      let num = figure-numering((), kind: kind, element: fig)
       link(location, [#supplement#num])
     } else {
       it
