@@ -82,7 +82,7 @@
         }
         block(inset: (bottom: bottom))[
           #figure(
-            fig.body + meta,
+            meta + fig.body,
             caption: fig.caption,
             kind: new-kind,
             supplement: fig.supplement,
@@ -151,7 +151,6 @@
   show figure: it => {
     // 修复float布局figure页面不正确的问题：https://github.com/typst/typst/issues/4359
 
-    let space = 0pt
     if it.outlined == true {
       return it
     }
