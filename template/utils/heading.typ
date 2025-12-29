@@ -18,7 +18,7 @@
 #let set-global-heading(info, body) = {
   // --- 1. 状态重置机制 ---
   // 遇到正文、图表、公式时，标记"上一个元素不是标题"
-  show par: it => { last-heading-level.update((level: 0, excess: 0pt)); it }
+  show par: it => { last-heading-level.update((level: 0, excess: 0pt)); it}
   show figure: it => { last-heading-level.update((level: 0, excess: 0pt)); it }
   show math.equation.where(block: true): it => { last-heading-level.update((level: 0, excess: 0pt)); it }
   show list: it => { last-heading-level.update((level: 0, excess: 0pt)); it }
@@ -27,11 +27,11 @@
   // --- 2. 一级标题 (通常强制分页，只需更新状态) ---
   show heading.where(level: 1): it => context {
     // 一级标题强制分页，不需要判断 above 为 0，但需要更新状态供二级标题检测
-    last-heading-level.update((level: 1, excess: heading-1.below - 
-                                                 below-leading-space(heading-1.below)
-                                                 ))
-
     pagebreak(weak: false)
+    last-heading-level.update((level: 1, excess: heading-1.below - 
+                                                below-leading-space(heading-1.below)
+                                                ))
+
     set text(size: font-size.小三, font: get-hei-font(info))
     set align(center)
     if it.numbering != none {
@@ -50,6 +50,7 @@
       v(heading-1.below)
     }
   }
+
 
   // --- 3. 二级标题 (需要判断是否紧跟一级标题) ---
   show heading.where(level: 2): it => context {
@@ -73,7 +74,11 @@
       sticky: true,
       below: below-leading-space(heading-2.below), 
     )[
-      #counter(heading).display(it.numbering)#h(0.5em)#it.body
+      #if it.numbering == none {
+        [#it.body]
+      } else {
+        [#counter(heading).display(it.numbering)#h(0.5em)#it.body]
+      }
     ]
   }
 

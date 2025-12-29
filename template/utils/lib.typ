@@ -7,7 +7,7 @@
 
 #import "ref.typ": set-ref
 
-#import "bilingual-bibliography.typ": bilingual-bibliography
+#import "bilingual-bibliography.typ": bilingual-bibliography, achievement-list
 
 #import "heading.typ": (
   set-global-heading,

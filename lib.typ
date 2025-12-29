@@ -1,4 +1,4 @@
-#import "template/consts.typ": info-keys, font-size
+#import "template/consts.typ": info-keys, font-size, 成果列表-keys
 #import "template/thesis.typ": thesis
 #import "template/tools/lib.typ": (
   table-figure, 
