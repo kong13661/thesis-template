@@ -240,11 +240,11 @@
   }
   // 5. 生成参考文献列表
 
-  bibliographyx(
+  box[#bibliographyx(
     bib-path,
     title: none, 
     style: style,
     prefix: "__your_work__:"
-  )
-  hide(citations)
+  )]
+  place(hide(citations))
 }

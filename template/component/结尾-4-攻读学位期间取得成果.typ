@@ -34,8 +34,6 @@
   #show heading.where(level: 4): set heading(outlined: false)
 
   = #title
-  #import "@preview/alexandria:0.2.2": *
-  #show: alexandria(prefix: "__your_work__:", read: path => read(path))
   #if not (info.at(info-keys.成果列表).at(成果列表-keys.条目) == none or
    info.at(info-keys.成果列表).at(成果列表-keys.条目).len() == 0) {
     heading(level: 2, "发表论文")
@@ -48,9 +46,5 @@
       items: info.at(info-keys.成果列表).at(成果列表-keys.条目)
     )
   }
-  #linebreak()
-  #if info.at(info-keys.成果列表).at(成果列表-keys.其他成果) != none {
-    v(-16pt)
-    info.at(info-keys.成果列表).at(成果列表-keys.其他成果)
-  }
+  #info.at(info-keys.成果列表).at(成果列表-keys.其他成果)
 ]
