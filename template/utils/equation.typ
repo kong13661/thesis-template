@@ -66,7 +66,7 @@
           frac-depth.update(d => d - 1)
         }
         let meta = metadata((__stop__: "__stop__"))
-        let tagged-frac = math.frac(nested-num + meta, nested-denom)
+        let tagged-frac = math.frac(nested-num + meta, nested-denom, style: it.style)
 
         context {
           let depth = frac-depth.get()

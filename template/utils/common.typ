@@ -9,7 +9,8 @@
   // set text(top-edge: "ascender", bottom-edge: "descender")
   set text(top-edge: 0.8em, bottom-edge: -0.2em)
   set strong(delta: info.at(info-keys.加粗粗度))
-  set list(indent: 2em, body-indent: 0.5em)
+  set list(indent: 2em, body-indent: 0.7em)
+  set enum(indent: 2em, body-indent: 0.5em)
   show: cjk-spacer
   body
 }
