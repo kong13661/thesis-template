@@ -49,5 +49,8 @@
     )
   }
   #linebreak()
-  #info.at(info-keys.成果列表).at(成果列表-keys.其他成果)
+  #if info.at(info-keys.成果列表).at(成果列表-keys.其他成果) != none {
+    v(-16pt)
+    info.at(info-keys.成果列表).at(成果列表-keys.其他成果)
+  }
 ]
