@@ -28,11 +28,9 @@
 
   // 嵌套分数处理. 首层分数不缩小字体。attach里的base不缩小字体。
   show math.attach: it => {
-    if it.base.has("children") and it.base.children.any(child => child.func() == metadata
-      and child.value.at("__stop__", default: none) == "__stop__") {
+    if it.has("label") and it.label == <__stop__> {
       return it
     }
-    let meta = metadata((__stop__: "__stop__"))
     let fields = it.fields()
     let base = fields.remove("base")
     for key in ("t", "b", "tl", "bl", "tr", "br") {
@@ -44,16 +42,14 @@
         })
       }
     }
-    math.attach(base + meta, ..fields)
+    [#math.attach(base, ..fields) <__stop__>]
   }
 
   show math.equation.where(block: true): it => {
     show math.frac: it => {
-        if it.num.has("children") and it.num.children.any(child => child.func() == metadata
-          and child.value.at("__stop__", default: none) == "__stop__") {
+        if it.has("label") and it.label == <__stop__> {
           return it
         }
-
         let nested-num = {
           frac-depth.update(d => d + 1)
           it.num
@@ -65,8 +61,7 @@
           it.denom
           frac-depth.update(d => d - 1)
         }
-        let meta = metadata((__stop__: "__stop__"))
-        let tagged-frac = math.frac(nested-num + meta, nested-denom, style: it.style)
+        let tagged-frac = [#math.frac(nested-num, nested-denom, style: it.style) <__stop__>]
 
         context {
           let depth = frac-depth.get()
