@@ -195,7 +195,8 @@
       }
       // text(num) // Force counter evaluation.
       if it.kind != figure-kind-algo {
-        figure(meta + body, ..fields, placement: none, outlined: true)
+        meta
+        figure(body, ..fields, placement: none, outlined: true)
       } else {
         set block(breakable: false, below: below-leading-space(6pt), 
               above: above-leading-space(space: 6pt))
