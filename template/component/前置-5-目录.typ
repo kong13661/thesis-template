@@ -22,7 +22,7 @@
     )
   }
   #heading("目 录")
-  #outline(title: none, depth: 3, indent: 2em)
+  #outline(title: none, depth: 4, indent: 2em)
 
   #set page(header: none, footer: none)
   #pagebreak(weak: true)

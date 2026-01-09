@@ -9,6 +9,7 @@
   let info = info-check(info: info)
   let degree = info.at(info-keys.申请学位级别)
   [#metadata(degree) <学位>]
+  [#metadata(info) <info>]
   show: set-global-page.with()
   show: set-font.with(info)
   show: common-set.with(info)
@@ -18,6 +19,7 @@
   show: set-footnote.with()
   show: set-ref.with()
   show: set-equation.with()
+  show: set-theoretic.with()
 
   封面(info: info)
   if degree != "学士" {
@@ -30,6 +32,7 @@
   }
 
   // 此时到了摘要页，需要重置页码为 1
+  show: commen-space-set.with()
   counter(page).update(1)
   show: set-中文摘要-heading.with()
   show: set-中文摘要-page.with()
@@ -39,7 +42,6 @@
   show: set-英文摘要-page.with()
   英文摘要(info: info)
 
-  show: commen-space-set.with()
   show: set-目录-heading.with()
   show: set-目录-page.with()
   目录(info: info)
