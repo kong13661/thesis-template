@@ -32,6 +32,7 @@
   }
 
   // 此时到了摘要页，需要重置页码为 1
+  show: commen-space-set.with()
   counter(page).update(1)
   show: set-中文摘要-heading.with()
   show: set-中文摘要-page.with()
@@ -41,7 +42,6 @@
   show: set-英文摘要-page.with()
   英文摘要(info: info)
 
-  show: commen-space-set.with()
   show: set-目录-heading.with()
   show: set-目录-page.with()
   目录(info: info)
