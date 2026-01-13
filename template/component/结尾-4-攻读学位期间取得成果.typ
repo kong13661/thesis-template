@@ -32,7 +32,7 @@
   #show heading.where(level: 2): set heading(outlined: false)
   #show heading.where(level: 3): set heading(outlined: false)
   #show heading.where(level: 4): set heading(outlined: false)
-
+  #set text(size: font-size.五号)
   = #title
   #if not (info.at(info-keys.成果列表).at(成果列表-keys.条目) == none or
    info.at(info-keys.成果列表).at(成果列表-keys.条目).len() == 0) {
