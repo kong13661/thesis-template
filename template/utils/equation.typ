@@ -55,6 +55,11 @@
     }
     let fields = it.fields()
     let children = fields.remove("children")
+    children = children.map(item => {
+      cases-depth.update(d => d + 1)
+      item
+      cases-depth.update(d => d - 1)
+    })
     let tagged-display = [#math.cases(..children, ..fields) <__stop__>]
     context {
       let depth = cases-depth.get()
