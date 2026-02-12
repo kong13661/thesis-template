@@ -20,6 +20,7 @@
 }
 
 #let frac-depth = state("frac-depth", 0)
+#let cases-depth = state("cases-depth", 0)
 
 #let set-equation(body) = {
   set math.equation(
@@ -45,6 +46,24 @@
       }
     }
     [#math.attach(base, ..fields) <__stop__>]
+  }
+
+  set math.cases(gap: 0.7em)
+  show math.cases: it => {
+    if it.has("label") and it.label == <__stop__> {
+      return it
+    }
+    let fields = it.fields()
+    let children = fields.remove("children")
+    let tagged-display = [#math.cases(..children, ..fields) <__stop__>]
+    context {
+      let depth = cases-depth.get()
+      if depth < 1 {
+        math.display(tagged-display)
+      } else {
+        it
+      }
+    }
   }
 
   show math.equation.where(block: true): it => {
