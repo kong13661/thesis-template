@@ -48,7 +48,7 @@
     [#math.attach(base, ..fields) <__stop__>]
   }
 
-  set math.cases(gap: 0.7em)
+  set math.cases(gap: 0.6em)
   show math.cases: it => {
     if it.has("label") and it.label == <__stop__> {
       return it
