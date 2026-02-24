@@ -215,8 +215,8 @@
   ) {
     let ele = query(it.target)
 
-    if ele.first().value.theorem-kind == "proof" or ele.first().value.theorem-kind == "lemma" {
-      assert(ele.first().value.title != none, message: "证明和引理引用必须有标题")
+    if ele.first().value.theorem-kind == "proof" {
+      assert(ele.first().value.title != none, message: "证明的引用必须有标题")
       if ele.first().value.title != none {
         let title-ref = ele.first().value.title.target
         let title-ele = query(title-ref)
