@@ -139,13 +139,13 @@
 #let proof-supplement = text(font: "Heiti SC")[证明]
 
 #let numbering-theorem(kind: none, step: false, ref: none) = {
-  let n = counter(heading.where(level: 1)).get().first()
+  let loc = if ref != none { ref } else { here() }
+  let n = counter(heading.where(level: 1)).at(loc).first()
   let thm-counter = counter("_thm" + str(n))
   let name-counter = if kind != none { kind + str(n) } else { "_thm" + str(n) }
   if step {
     counter(name-counter).step()
   }
-  let loc = if ref != none { ref } else { here() }
   let count = counter(name-counter).at(loc).first() + 1
   let num = numbering("1", n) + "." + str(count)
   num
@@ -214,8 +214,27 @@
       and el.value.at("theorem-kind", default: none) != none
   ) {
     let ele = query(it.target)
-    let num = numbering-theorem(kind: ele.first().value.supplement.child.text, step: false, ref: it.target)
-    link(ele.first().location())[#ele.first().value.supplement#num]
+
+    if ele.first().value.theorem-kind == "proof" or ele.first().value.theorem-kind == "lemma" {
+      assert(ele.first().value.title != none, message: "证明和引理引用必须有标题")
+      if ele.first().value.title != none {
+        let title-ref = ele.first().value.title.target
+        let title-ele = query(title-ref)
+        let num = numbering-theorem(
+          kind: title-ele.first().value.supplement.child.text,
+          step: false,
+          ref: title-ref,
+        )
+        link(ele.first().location())[#title-ele.first().value.supplement#num#ele.first().value.supplement]
+      }
+    } else {
+      let num = numbering-theorem(
+        kind: ele.first().value.supplement.child.text,
+        step: false,
+        ref: it.target,
+      )
+      link(ele.first().location())[#ele.first().value.supplement#num]
+    }
   } else {
     // Other references as usual.
     it
