@@ -365,6 +365,6 @@
   inset: (bottom: (0.6cm - 1em) / 2, top: (0.6cm - 1em) / 2),
 )
 
-#let header-line = table.hline.with(stroke: 1.5pt)
-#let footer-line = table.hline.with(stroke: 1.5pt)
-#let middle-line = table.hline.with(stroke: 0.75pt)
+#let toprule = table.hline.with(stroke: 1.5pt)
+#let bottomrule = table.hline.with(stroke: 1.5pt)
+#let midrule = table.hline.with(stroke: 0.75pt)
