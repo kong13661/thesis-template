@@ -43,7 +43,7 @@
   ]
 
   #let shrink = 0em
-  #if info.at(info-keys.合作导师中文名) != none or info.at(info-keys.合作导师中文名) != "" {
+  #if info.at(info-keys.合作导师中文名) != none and info.at(info-keys.合作导师中文名) != "" {
     shrink = 1.5em
   }
   #v(3em - shrink)
