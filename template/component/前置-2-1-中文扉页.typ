@@ -208,7 +208,7 @@
         ),
         justified-text-with-underline(
           6em,
-          31em,
+          27.8em,
           "专业学位领域",
           align(center, text(weight: "bold", info.at(info-keys.专业学位领域))),
         ),
